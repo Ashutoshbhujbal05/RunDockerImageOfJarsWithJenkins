@@ -1,0 +1,34 @@
+version: "3"
+services:
+  selenium-hub:
+    image: selenium/hub:4.15.0
+
+  chrome:
+    image: selenium/node-chrome:4.15.0
+    shm_size: "2g"
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  firefox:
+    image: selenium/node-firefox:4.15.0
+    shm_size: "2g"
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  seleniumproject:
+    image: ashutosh753/newprojectofseleniumjar
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub 
+    volumes:
+      - "./NewSeleniumGridCompose/cucumberreports:/home/seleniumCode/target"
+
