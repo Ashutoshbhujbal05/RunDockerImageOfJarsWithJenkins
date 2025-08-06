@@ -3,20 +3,36 @@ pipeline {
 
     stages
     {
+        stage('pull the image') 
+        {
+            steps 
+            {
+                bat "docker pull ashutosh753/newprojectofseleniumjar"
+            }
+        }
+
+        stage('Start the grid') 
+        {
+            steps 
+            {
+                bat "docker-compose up -d selenium-hub chrome firefox"
+            }
+        }
+
         stage('Execute Cucumber Test cases') 
         {
             steps 
             {
-                bat "docker-compose up"
+                bat "docker-compose up seleniumproject"
             }
         }
-        
-        stage('Close Docker compose After Exceution') 
+    }
+    post
+    {
+        always
         {
-            steps
-            {
-                bat "docker-compose down"
-            }
+           bat "docker-compose down"
         }
+
     }
 }
